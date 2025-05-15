@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Notes App - Full Integrated Version with Sidebar Features</title>
+<title>Notes App - Final with Category on Notes and B&W Login</title>
 <style>
   /* Reset and base */
   * {
@@ -23,19 +23,22 @@
     min-height: 0;
     background: #121212;
   }
+  /* LOGIN SCREEN - BLACK & WHITE, SMALLER FONT */
   #login-screen {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: #fff;
-    color: #111;
+    background: #000;
+    color: #fff;
+    font-size: 0.9rem;
   }
   #login-screen h2 {
     margin-bottom: 1rem;
     font-weight: 700;
     letter-spacing: 0.05em;
+    font-size: 1.5rem;
   }
   #form-tabs {
     display: flex;
@@ -46,17 +49,17 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background: #eee;
-    color: #555;
+    background: #111;
+    color: #ccc;
     border-radius: 10px;
     padding: 0.7rem 1.5rem;
     font-weight: 600;
-    font-size: 1rem;
     cursor: pointer;
     box-shadow: none;
     user-select: none;
     transition: background 0.3s ease, color 0.3s ease;
     border: 2px solid transparent;
+    font-size: 1rem;
   }
   .tab-button svg {
     width: 20px;
@@ -64,63 +67,70 @@
     fill: currentColor;
   }
   .tab-button:hover {
-    background: #ddd;
-    color: #222;
+    background: #333;
+    color: #fff;
   }
   .tab-button.active {
-    background: #3f51b5;
-    color: #fff;
-    border-color: #2c3a9a;
-    box-shadow: 0 0 12px rgba(63,81,181,0.6);
+    background: #fff;
+    color: #000;
+    border-color: #888;
+    box-shadow: 0 0 12px rgba(255,255,255,0.6);
   }
   form {
     display: flex;
     flex-direction: column;
-    width: 320px;
-    background: #fafafa;
-    padding: 2rem 2.5rem 2.5rem;
+    width: 280px;
+    background: #111;
+    padding: 1.8rem 2rem 2rem;
     border-radius: 12px;
-    box-shadow: 0 3px 12px rgba(63,81,181,0.15);
+    box-shadow: 0 3px 12px rgba(255,255,255,0.15);
+    color: #eee;
+    font-size: 0.9rem;
   }
   form input[type="text"],
   form input[type="password"] {
-    padding: 0.75rem 1rem;
-    margin-bottom: 1.2rem;
-    border: 1.5px solid #ddd;
+    padding: 0.6rem 1rem;
+    margin-bottom: 1rem;
+    border: 1.5px solid #666;
     border-radius: 6px;
     font-size: 1rem;
-    background: #fff;
-    color: #111;
+    background: #222;
+    color: #eee;
     transition: border-color 0.3s ease;
+  }
+  form input[type="text"]::placeholder,
+  form input[type="password"]::placeholder {
+    color: #aaa;
   }
   form input[type="text"]:focus,
   form input[type="password"]:focus {
     outline: none;
-    border-color: #3f51b5;
-    box-shadow: 0 0 6px rgba(63,81,181,0.4);
+    border-color: #fff;
+    box-shadow: 0 0 5px 1px #fff;
+    background: #333;
   }
   form button {
-    background: #3f51b5;
-    color: #fff;
+    background: #fff;
+    color: #000;
     font-weight: 700;
-    padding: 0.85rem 1.2rem;
+    padding: 0.75rem 1.2rem;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     letter-spacing: 0.05em;
     user-select: none;
     transition: background 0.3s ease, box-shadow 0.3s ease;
-    margin-top: 10px;
+    margin-top: 5px;
   }
   form button:hover {
-    background: #2c3a9a;
-    box-shadow: 0 4px 15px rgba(44,58,154,0.5);
+    background: #bbb;
+    box-shadow: 0 4px 15px rgba(255,255,255,0.5);
   }
   #form-message {
-    margin-top: 1rem;
-    font-size: 0.95rem;
-    min-height: 1.4em;
+    margin-top: 0.8rem;
+    font-size: 0.9rem;
+    min-height: 1.2em;
     text-align: center;
     color: #d32f2f;
     user-select: none;
@@ -160,7 +170,7 @@
     background: #fff;
   }
   #category-bar {
-    display: none;
+    display: flex;
     padding: 0.5rem 1rem;
     background: #111;
     border-bottom: 1px solid #333;
@@ -168,9 +178,6 @@
     gap: 12px;
     justify-content: center;
     align-items: center;
-  }
-  #category-bar.active {
-    display: flex;
   }
   .category-button {
     background: transparent;
@@ -182,62 +189,12 @@
     cursor: pointer;
     font-size: 1rem;
     user-select: none;
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 6px;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
   .category-button:hover,
   .category-button.active {
     background-color: #fff;
     color: #000;
-  }
-  .category-button .info-icon {
-    font-style: normal;
-    font-weight: bold;
-    border: 1px solid currentColor;
-    border-radius: 50%;
-    width: 16px;
-    height: 16px;
-    font-size: 12px;
-    line-height: 14px;
-    text-align: center;
-    cursor: help;
-  }
-  .category-button .tooltip {
-    visibility: hidden;
-    background-color: #333;
-    color: #fff;
-    text-align: left;
-    border-radius: 8px;
-    padding: 6px 8px;
-    position: absolute;
-    bottom: 120%;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-    font-size: 0.85rem;
-    z-index: 10;
-    opacity: 0;
-    transition: opacity 0.3s;
-    pointer-events: none;
-  }
-  .category-button .tooltip::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #333 transparent transparent transparent;
-  }
-  .category-button:hover .tooltip,
-  .category-button:focus-within .tooltip {
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
   }
   #notes-list {
     flex-grow: 1;
@@ -445,6 +402,29 @@
   #note-content:focus {
     box-shadow: inset 0 0 15px rgba(0,0,0,0.15);
   }
+  /* New category select inside note content form (above note title) */
+  #category-select-container {
+    margin-bottom: 1rem;
+  }
+  #category-select-label {
+    color: #000;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    display: block;
+  }
+  #category-select {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1.5px solid #666;
+    outline: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  #category-select:focus {
+    border-color: #000;
+    box-shadow: 0 0 6px rgba(0,0,0,0.3);
+  }
   #note-actions {
     padding-top: 1.1rem;
     text-align: right;
@@ -587,24 +567,9 @@
       <input type="search" id="search-input" placeholder="Search notes..." autocomplete="off" aria-label="Search notes" />
     </div>
     <div id="category-bar" aria-label="Category selection" role="group">
-      <button class="category-button active" data-category="notes" tabindex="0">
-        Notes
-        <span class="info-icon" tabindex="-1" role="tooltip" aria-label="Notes category info">i
-          <span class="tooltip">Notes are your personal entries.</span>
-        </span>
-      </button>
-      <button class="category-button" data-category="book" tabindex="0">
-        Book
-        <span class="info-icon" tabindex="-1" role="tooltip" aria-label="Book category info">i
-          <span class="tooltip">Book contains study reference materials.</span>
-        </span>
-      </button>
-      <button class="category-button" data-category="syllabus" tabindex="0">
-        Syllabus
-        <span class="info-icon" tabindex="-1" role="tooltip" aria-label="Syllabus category info">i
-          <span class="tooltip">Syllabus tracks your curriculum content.</span>
-        </span>
-      </button>
+      <button class="category-button active" data-category="notes" tabindex="0">Notes</button>
+      <button class="category-button" data-category="book" tabindex="0">Book</button>
+      <button class="category-button" data-category="syllabus" tabindex="0">Syllabus</button>
     </div>
     <ul id="notes-list" role="listbox" tabindex="0" aria-label="List of notes"></ul>
     <button id="btn-new-note" aria-label="Create new note">+ New Note</button>
@@ -614,9 +579,7 @@
         Dictionary
       </button>
       <button id="btn-category-toggle" aria-label="Toggle category bar" title="Toggle categories" aria-expanded="false">
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M9 18l6-6-6-6"/>
-        </svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 18l6-6-6-6"/></svg>
       </button>
       <button id="logout-btn" aria-label="Logout" title="Logout">
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" style="width:24px; height:24px; fill: currentColor;">
@@ -631,6 +594,14 @@
     </div>
   </aside>
   <main id="main-content" aria-live="polite">
+    <div id="category-select-container">
+      <label for="category-select" id="category-select-label">Category</label>
+      <select id="category-select" aria-labelledby="category-select-label">
+        <option value="notes">Notes</option>
+        <option value="book">Book</option>
+        <option value="syllabus">Syllabus</option>
+      </select>
+    </div>
     <input id="note-title" type="text" placeholder="Note Title" aria-label="Note title" />
     <textarea id="note-content" placeholder="Start typing your note here..." aria-label="Note content"></textarea>
     <div id="note-actions">
@@ -660,7 +631,6 @@
 
 <script>
 (() => {
-  // Elements
   const loginScreen = document.getElementById('login-screen');
   const loginForm = document.getElementById('login-form');
   const signupForm = document.getElementById('signup-form');
@@ -691,6 +661,7 @@
   const btnCategoryToggle = document.getElementById('btn-category-toggle');
   const btnDictionary = document.getElementById('btn-dictionary');
   const categoryButtons = categoryBar.querySelectorAll('.category-button');
+  const categorySelect = document.getElementById('category-select');
 
   let currentUser = null;
   let notes = [];
@@ -700,6 +671,7 @@
   let searchTimeout = null;
   let isFullscreen = false;
   let currentTextSize = "normal";
+  let selectedCategoryFilter = 'notes'; // default tab filter
 
   function setTextSize(size) {
     let titleSize, contentSize;
@@ -737,11 +709,9 @@
   function generateId() {
     return 'id-' + Math.random().toString(36).slice(2);
   }
-
   function saveUsers(users) {
     localStorage.setItem('notesapp_users', JSON.stringify(users));
   }
-
   function loadUsers() {
     const raw = localStorage.getItem('notesapp_users');
     try {
@@ -750,15 +720,12 @@
       return {};
     }
   }
-
   function getUserKey(key) {
     return 'notesapp_' + currentUser + '_' + key;
   }
-
   function saveNotesLocal() {
     localStorage.setItem(getUserKey('notes'), JSON.stringify(notes));
   }
-
   function loadNotesLocal() {
     const raw = localStorage.getItem(getUserKey('notes'));
     try {
@@ -767,18 +734,19 @@
       return [];
     }
   }
-
   function saveLogin(user) {
     localStorage.setItem('notesapp_user', user);
   }
-
   function loadLogin() {
     const user = localStorage.getItem('notesapp_user');
     return user ? { user } : null;
   }
-
   function clearLogin() {
     localStorage.removeItem('notesapp_user');
+  }
+
+  function filterNotesByCategory(notesArray, category) {
+    return notesArray.filter(note => note.category === category);
   }
 
   function renderLogin() {
@@ -790,7 +758,6 @@
     currentUser = null;
     formMessage.textContent = '';
   }
-
   function showLoginForm() {
     tabLogin.classList.add('active');
     tabSignup.classList.remove('active');
@@ -799,7 +766,6 @@
     formMessage.textContent = '';
     formMessage.style.color = '#d32f2f';
   }
-
   function showSignupForm() {
     tabSignup.classList.add('active');
     tabLogin.classList.remove('active');
@@ -815,24 +781,31 @@
     clearNoteFields();
     renderNotesList();
     loadTextSize();
+    // Set category select to default (or last selected)
+    categorySelect.value = 'notes';
   }
 
   function clearNoteFields() {
     noteTitleInput.value = '';
     noteContentInput.value = '';
+    categorySelect.value = 'notes';
     setNoteEditable(false);
   }
   function setNoteEditable(editable) {
     noteTitleInput.readOnly = !editable;
     noteContentInput.readOnly = !editable;
+    categorySelect.disabled = !editable;
     noteSaved = !editable;
     btnSaveNote.disabled = !editable;
     btnEditNote.disabled = editable;
   }
 
   function renderNotesList() {
+    // Filter notes by current selected category
+    filteredNotes = filterNotesByCategory(notes, selectedCategoryFilter);
+    // Also filter by search term
     const searchTerm = searchInput.value.trim().toLowerCase();
-    filteredNotes = notes.filter(note =>
+    filteredNotes = filteredNotes.filter(note =>
       note.title.toLowerCase().includes(searchTerm) ||
       note.content.toLowerCase().includes(searchTerm)
     );
@@ -873,6 +846,7 @@
     } else {
       noteTitleInput.value = note.title;
       noteContentInput.value = note.content;
+      categorySelect.value = note.category || 'notes';
       btnDeleteNote.disabled = false;
       btnEditNote.disabled = false;
       setNoteEditable(false);
@@ -951,6 +925,7 @@
       id: newId,
       title: '',
       content: '',
+      category: categorySelect.value || 'notes',
       timestamp: Date.now()
     };
     notes.unshift(newNote);
@@ -978,6 +953,7 @@
     }
     const title = noteTitleInput.value.trim();
     const content = noteContentInput.value.trim();
+    const categoryVal = categorySelect.value || 'notes';
     if (!title) {
       alert('Note title cannot be empty.');
       return;
@@ -988,16 +964,20 @@
         id: selectedNoteId,
         title,
         content,
+        category: categoryVal,
         timestamp: Date.now()
       });
     } else {
       notes[idx].title = title;
       notes[idx].content = content;
+      notes[idx].category = categoryVal;
       notes[idx].timestamp = Date.now();
     }
     saveNotesLocal();
     noteSaved = true;
     setNoteEditable(false);
+    // Refresh list to keep category filter correct if changed category of note
+    renderNotesList();
   });
 
   btnDeleteNote.addEventListener('click', () => {
@@ -1042,13 +1022,15 @@
     btnCategoryToggle.setAttribute('aria-expanded', isActive.toString());
   });
 
-  // Category button click: update active class and dictionary link
+  // Category button click: update active class and dictionary link & filter notes
   categoryButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       categoryButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const cat = btn.getAttribute('data-category');
       btnDictionary.dataset.link = dictionaryLinks[cat] || dictionaryLinks.notes;
+      selectedCategoryFilter = cat;
+      renderNotesList();
     });
   });
 
@@ -1065,37 +1047,6 @@
   txtSmallBtn.addEventListener('click', () => setTextSize('small'));
   txtNormalBtn.addEventListener('click', () => setTextSize('normal'));
   txtLargeBtn.addEventListener('click', () => setTextSize('large'));
-  function setTextSize(size) {
-    let titleSize, contentSize;
-    if (size === 'small') {
-      titleSize = '1.4rem';
-      contentSize = '0.9rem';
-    } else if (size === 'large') {
-      titleSize = '2.4rem';
-      contentSize = '1.4rem';
-    } else {
-      titleSize = '1.3rem';
-      contentSize = '1.15rem';
-      size = 'normal';
-    }
-    noteTitleInput.style.fontSize = titleSize;
-    noteContentInput.style.fontSize = contentSize;
-    currentTextSize = size;
-
-    txtSmallBtn.classList.toggle('active', size === 'small');
-    txtNormalBtn.classList.toggle('active', size === 'normal');
-    txtLargeBtn.classList.toggle('active', size === 'large');
-
-    txtSmallBtn.setAttribute('aria-pressed', size === 'small');
-    txtNormalBtn.setAttribute('aria-pressed', size === 'normal');
-    txtLargeBtn.setAttribute('aria-pressed', size === 'large');
-
-    localStorage.setItem('notesapp_textsize', size);
-  }
-  function loadTextSize() {
-    const savedSize = localStorage.getItem('notesapp_textsize');
-    setTextSize(savedSize && ['small', 'normal', 'large'].includes(savedSize) ? savedSize : 'normal');
-  }
 
   // Fullscreen toggle functionality
   btnFullscreen.addEventListener('click', () => {
@@ -1137,4 +1088,3 @@
 </script>
 </body>
 </html>
-
